@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Download File</title>
   <style>
     body {
@@ -24,11 +24,11 @@
       font-size: 1rem;
       border: none;
       border-radius: 8px;
-      cursor: not-allowed;
-      opacity: 0.7;
       width: clamp(150px, 60%, 250px);
       margin: 15px auto;
       display: block;
+      opacity: 0.6;
+      cursor: not-allowed;
     }
     #btn1 {
       background-color: green;
@@ -42,8 +42,8 @@
     .adblock-warning {
       display: none;
       color: red;
-      margin-top: 20px;
       font-weight: bold;
+      margin-top: 20px;
     }
     .ad-banner {
       margin-top: 25px;
@@ -61,12 +61,12 @@
   <p id="timer2" style="display:none;">Tunggu 10 detik lagi...</p>
   <button id="btn2" disabled>Download Sekarang</button>
 
-  <!-- Peringatan hanya muncul jika AdBlock aktif -->
+  <!-- Pesan peringatan AdBlock -->
   <div class="adblock-warning" id="adblock-warning">
     Harap nonaktifkan AdBlock untuk melanjutkan!
   </div>
 
-  <!-- Banner Iklan 300x250 -->
+  <!-- Banner Iklan -->
   <div class="ad-banner" id="ad-container">
     <script type="text/javascript">
       atOptions = {
@@ -80,70 +80,87 @@
     <script type="text/javascript" src="//www.highperformanceformat.com/815752968be50e066ff682026321e704/invoke.js"></script>
   </div>
 
-  <!-- Iklan Popunder -->
+  <!-- Popunder -->
   <script type='text/javascript' src='//pl26969869.profitableratecpm.com/83/42/81/8342811b53fd76ac11d6fbea25b51698.js'></script>
 
-  <!-- SCRIPT LOGIKA -->
   <script>
+    let adBlocked = false;
+    let count1 = 15;
+    let count2 = 10;
+    let interval1 = null;
+    let interval2 = null;
+
     const btn1 = document.getElementById("btn1");
     const btn2 = document.getElementById("btn2");
     const timer1 = document.getElementById("timer1");
     const timer2 = document.getElementById("timer2");
+    const adWarning = document.getElementById("adblock-warning");
+    const adContainer = document.getElementById("ad-container");
 
-    const finalLink = "https://tujuan-download.com/file.zip"; // Ganti link sesuai kebutuhan
+    const finalLink = "https://tujuan-download.com/file.zip"; // Ganti link download
 
-    // Timer Pertama
-    let count1 = 15;
-    const interval1 = setInterval(() => {
-      count1--;
-      timer1.textContent = `Tunggu ${count1} detik...`;
-      if (count1 <= 0) {
-        clearInterval(interval1);
-        btn1.disabled = false;
-        btn1.style.cursor = "pointer";
-        btn1.style.opacity = "1";
-      }
-    }, 1000);
+    // Fungsi memulai timer pertama
+    function startTimer1() {
+      interval1 = setInterval(() => {
+        if (!adBlocked) {
+          count1--;
+          timer1.textContent = `Tunggu ${count1} detik...`;
+          if (count1 <= 0) {
+            clearInterval(interval1);
+            btn1.disabled = false;
+            btn1.style.opacity = "1";
+            btn1.style.cursor = "pointer";
+          }
+        }
+      }, 1000);
+    }
 
+    // Deteksi AdBlock
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        const adHeight = adContainer.offsetHeight;
+        const adHTML = adContainer.innerHTML.trim().length;
+
+        if (adHeight === 0 || adHTML === 0) {
+          adBlocked = true;
+          adWarning.style.display = "block";
+          clearInterval(interval1); // stop timer jika AdBlock aktif
+        } else {
+          startTimer1();
+        }
+      }, 2000);
+    });
+
+    // Klik tombol pertama
     btn1.addEventListener("click", () => {
-      window.open("about:blank", "_blank"); // Trigger popunder
-      timer1.style.display = "none";
+      if (adBlocked) return;
+      window.open("about:blank", "_blank"); // Popunder
       btn1.style.display = "none";
+      timer1.style.display = "none";
 
-      timer2.style.display = "block";
       btn2.style.display = "block";
+      timer2.style.display = "block";
 
-      let count2 = 10;
-      const interval2 = setInterval(() => {
-        count2--;
-        timer2.textContent = `Tunggu ${count2} detik lagi...`;
-        if (count2 <= 0) {
-          clearInterval(interval2);
-          btn2.disabled = false;
-          btn2.style.cursor = "pointer";
-          btn2.style.opacity = "1";
+      interval2 = setInterval(() => {
+        if (!adBlocked) {
+          count2--;
+          timer2.textContent = `Tunggu ${count2} detik lagi...`;
+          if (count2 <= 0) {
+            clearInterval(interval2);
+            btn2.disabled = false;
+            btn2.style.opacity = "1";
+            btn2.style.cursor = "pointer";
+          }
         }
       }, 1000);
     });
 
     btn2.addEventListener("click", () => {
-      window.location.href = finalLink;
-    });
-
-    // Deteksi AdBlock berdasarkan kegagalan memuat iklan
-    window.addEventListener("load", function () {
-      setTimeout(() => {
-        const adContainer = document.getElementById("ad-container");
-        const adblockWarning = document.getElementById("adblock-warning");
-
-        if (adContainer.offsetHeight === 0 || adContainer.innerHTML.trim().length === 0) {
-          adblockWarning.style.display = "block";
-          btn1.disabled = true;
-          btn1.style.opacity = "0.5";
-          btn1.style.cursor = "not-allowed";
-        }
-      }, 2000);
+      if (!adBlocked) {
+        window.location.href = finalLink;
+      }
     });
   </script>
+
 </body>
 </html>
