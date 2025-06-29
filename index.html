@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Download File</title>
   <style>
     body {
@@ -9,41 +10,65 @@
       color: white;
       text-align: center;
       font-family: Arial, sans-serif;
-      padding-top: 50px;
+      padding: 30px 20px;
+      margin: 0;
     }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1rem;
+      margin: 10px 0;
+    }
+
     button {
-      padding: 15px 30px;
-      font-size: 16px;
+      padding: 12px 24px;
+      font-size: 1rem;
       border: none;
       border-radius: 8px;
       cursor: not-allowed;
       opacity: 0.7;
+      width: 90%;
+      max-width: 300px;
+      margin-top: 10px;
     }
+
     #btn1 {
       background-color: green;
       color: white;
     }
+
     #btn2 {
       background-color: blue;
       color: white;
       display: none;
     }
+
     #adblock-message {
       color: red;
       font-weight: bold;
       display: none;
-      margin-top: 30px;
+      margin-top: 20px;
+      padding: 10px;
+    }
+
+    @media (min-width: 600px) {
+      button {
+        width: 300px;
+      }
     }
   </style>
 </head>
 <body>
 
   <h2>Download File Anda</h2>
-
   <p id="timer1">Tunggu 15 detik...</p>
   <button id="btn1" disabled>Menuju Link</button>
 
-  <p id="timer2" style="display:none;">Tunggu 10 detik lagi...</p>
+  <p id="timer2" style="display:none;">Tunggu 15 detik lagi...</p>
   <button id="btn2" disabled>Download Sekarang</button>
 
   <p id="adblock-message">Silakan nonaktifkan AdBlock untuk melanjutkan proses download.</p>
@@ -51,9 +76,8 @@
   <!-- Script Iklan Popunder -->
   <script type='text/javascript' src='//pl26969869.profitableratecpm.com/83/42/81/8342811b53fd76ac11d6fbea25b51698.js'></script>
 
-  <!-- Script Umpan Adblock -->
+  <!-- AdBlock Detector + Timer -->
   <script>
-    // Buat elemen umpan yang biasanya diblokir AdBlock
     const bait = document.createElement('div');
     bait.className = 'adsbox';
     bait.style.height = '1px';
@@ -67,15 +91,12 @@
         const adblockDetected = (bait.offsetHeight === 0 || bait.offsetParent === null);
         const adMsg = document.getElementById('adblock-message');
         const btn1 = document.getElementById('btn1');
-        const btn2 = document.getElementById('btn2');
 
         if (adblockDetected) {
           adMsg.style.display = 'block';
-          // Pastikan tombol tetap nonaktif
           btn1.disabled = true;
           btn1.style.opacity = 0.4;
         } else {
-          // Lanjutkan timer normal
           startTimer();
         }
         bait.remove();
@@ -87,7 +108,7 @@
       const btn2 = document.getElementById("btn2");
       const timer1 = document.getElementById("timer1");
       const timer2 = document.getElementById("timer2");
-      const finalLink = "https://www.mediafire.com/file/nfxtfpko8mk1fq3/PPCine.ID.V3.0.2._PREMIUM_.apk/file"; // ganti dengan link file asli
+      const finalLink = "https://tujuan-download.com/file.zip"; // Ganti link sesuai kebutuhan
 
       let count1 = 15;
       const interval1 = setInterval(() => {
