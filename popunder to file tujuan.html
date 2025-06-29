@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Download File</title>
+  <style>
+    body {
+      background-color: #1a1a1a;
+      color: white;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      padding-top: 50px;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+    #btn1 {
+      background-color: green;
+      color: white;
+    }
+    #btn2 {
+      background-color: blue;
+      color: white;
+      display: none;
+    }
+    #adblock-message {
+      color: red;
+      font-weight: bold;
+      display: none;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Download File Anda</h2>
+
+  <p id="timer1">Tunggu 15 detik...</p>
+  <button id="btn1" disabled>Menuju Link</button>
+
+  <p id="timer2" style="display:none;">Tunggu 10 detik lagi...</p>
+  <button id="btn2" disabled>Download Sekarang</button>
+
+  <p id="adblock-message">Silakan nonaktifkan AdBlock untuk melanjutkan proses download.</p>
+
+  <!-- Script Iklan Popunder -->
+  <script type='text/javascript' src='//pl26969869.profitableratecpm.com/83/42/81/8342811b53fd76ac11d6fbea25b51698.js'></script>
+
+  <!-- Script Umpan Adblock -->
+  <script>
+    // Buat elemen umpan yang biasanya diblokir AdBlock
+    const bait = document.createElement('div');
+    bait.className = 'adsbox';
+    bait.style.height = '1px';
+    bait.style.width = '1px';
+    bait.style.position = 'absolute';
+    bait.style.left = '-999px';
+    document.body.appendChild(bait);
+
+    window.addEventListener('load', function () {
+      setTimeout(() => {
+        const adblockDetected = (bait.offsetHeight === 0 || bait.offsetParent === null);
+        const adMsg = document.getElementById('adblock-message');
+        const btn1 = document.getElementById('btn1');
+        const btn2 = document.getElementById('btn2');
+
+        if (adblockDetected) {
+          adMsg.style.display = 'block';
+          // Pastikan tombol tetap nonaktif
+          btn1.disabled = true;
+          btn1.style.opacity = 0.4;
+        } else {
+          // Lanjutkan timer normal
+          startTimer();
+        }
+        bait.remove();
+      }, 100);
+    });
+
+    function startTimer() {
+      const btn1 = document.getElementById("btn1");
+      const btn2 = document.getElementById("btn2");
+      const timer1 = document.getElementById("timer1");
+      const timer2 = document.getElementById("timer2");
+      const finalLink = "https://www.mediafire.com/file/nfxtfpko8mk1fq3/PPCine.ID.V3.0.2._PREMIUM_.apk/file"; // ganti dengan link file asli
+
+      let count1 = 15;
+      const interval1 = setInterval(() => {
+        count1--;
+        timer1.textContent = `Tunggu ${count1} detik...`;
+        if (count1 <= 0) {
+          clearInterval(interval1);
+          btn1.disabled = false;
+          btn1.style.cursor = "pointer";
+          btn1.style.opacity = "1";
+        }
+      }, 1000);
+
+      btn1.addEventListener("click", () => {
+        timer1.style.display = "none";
+        btn1.style.display = "none";
+
+        timer2.style.display = "block";
+        btn2.style.display = "inline-block";
+
+        let count2 = 10;
+        const interval2 = setInterval(() => {
+          count2--;
+          timer2.textContent = `Tunggu ${count2} detik lagi...`;
+          if (count2 <= 0) {
+            clearInterval(interval2);
+            btn2.disabled = false;
+            btn2.style.cursor = "pointer";
+            btn2.style.opacity = "1";
+          }
+        }, 1000);
+      });
+
+      btn2.addEventListener("click", () => {
+        window.location.href = finalLink;
+      });
+    }
+  </script>
+
+</body>
+</html>
